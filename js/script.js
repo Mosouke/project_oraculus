@@ -60,3 +60,77 @@ let datas = [
       "image": "./img/capricorne.png"
     }
   ]
+
+  const signe_1 = document.querySelector('.arrow-left');
+  const signe_2 = document.querySelector('.arrow-right');
+  const signe_page = document.querySelector('.left-horoscope');
+  const signe_right = document.querySelector('.right-horoscope');
+  const image_signe = document.querySelector('aside img');
+  const span_left = document.createElement('span');
+  const span_right = document.createElement('span');
+  
+  let data = [
+      // Les données d'horoscope que vous avez fournies
+  ];
+  
+  let current_index = 0;
+  
+  signe_1.addEventListener('click', () => {
+      changer_horoscope((current_index - 1 + datas.length) % datas.length);
+  });
+  
+  signe_2.addEventListener('click', () => {
+      changer_horoscope((current_index + 1) % datas.length);
+  });
+  
+  signe_page.addEventListener('click', () => {
+      changer_horoscope((current_index - 1 + datas.length) % datas.length);
+  });
+  
+  signe_right.addEventListener('click', () => {
+      changer_horoscope((current_index + 1) % datas.length);
+  });
+  
+  document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowLeft') {
+          changer_horoscope((current_index - 1 + datas.length) % datas.length);
+      } else if (event.key === 'ArrowRight') {
+          changer_horoscope((current_index + 1) % datas.length);
+      }
+  });
+  
+  changer_horoscope(0);
+  
+  function changer_horoscope(index) {
+      const horoscope = datas[index];
+      const horoscope_plus = datas[(index + 1) % datas.length];
+      const horoscope_moins = datas[(index - 1 + datas.length) % datas.length];
+      current_index = index;
+      const date_actuelle = new Date();
+      const options = { day: 'numeric', month: 'numeric', year: 'numeric' };
+      const date_formatee = date_actuelle.toLocaleDateString('fr-FR', options);
+      
+      document.getElementById('datejour').innerText = "-- HOROSCOPE DU " + date_formatee;
+      document.querySelector('h1').innerText = horoscope.signe;
+      document.getElementById('date').innerText = "DU " + horoscope.date;
+      document.getElementById('amour').innerText = "Amour : " + horoscope.amour;
+      document.getElementById('travail').innerText = "Travail : " + horoscope.travail;
+      document.getElementById('argent').innerText = "Argent : " + horoscope.argent;
+      document.getElementById('sante').innerText = "Santé : " + horoscope.sante;
+      document.getElementById('famille').innerText = "Famille et amis : " + horoscope.famille;
+      document.getElementById('conseil').innerText = "Conseil : " + horoscope.conseil;
+  
+      image_signe.src = horoscope.image;
+  
+      const left_signe = document.querySelector('.left-horoscope');
+      const right_signe = document.querySelector('.right-horoscope');
+      
+      left_signe.textContent = horoscope_moins.signe;
+      left_signe.appendChild(span_left);
+      span_left.textContent = " " + horoscope_moins.date;
+  
+      right_signe.textContent = horoscope_plus.signe;
+      right_signe.appendChild(span_right);
+      span_right.textContent = " " + horoscope_plus.date;
+  }
+  
